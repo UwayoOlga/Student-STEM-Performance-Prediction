@@ -14,5 +14,5 @@ Figma is a cloud-based design and prototyping tool used for UI/UX design, wirefr
 - **Free & Paid Plans**: Accessible for individuals and businesses.
 
 ### Get Started:
-Visit [Figma]([https://www.figma.com/](https://www.figma.com/design/iteHBHTWZpZcGYDMW4NMNV/Droupout?node-id=12-10&t=GGHDWFfIBbAUE6XN-1)) to create your first design!
+Visit [Figma]([https://www.figma.com/](https://www.figma.com/design/iteHBHTWZpZcGYDMW4NMNV/Droupout?node-id=12-10&t=GGHDWFfIBbAUE6XN-1)) to see more!
 
