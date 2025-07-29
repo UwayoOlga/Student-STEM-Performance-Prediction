@@ -1,0 +1,9 @@
+OULAD Sampled Dataset Information
+========================================
+sampling_ratio: 0.25
+random_seed: 42
+total_students: 7196
+total_assessments: 43429
+total_vle_interactions: 2721661
+courses: 7
+presentations: 4
