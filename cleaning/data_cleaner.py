@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 OULAD Data Cleaning Module
 Handles missing values, inconsistent formats, outliers, and data transformations
@@ -30,7 +31,7 @@ class OULADDataCleaner:
         Returns:
             dict: Dictionary containing all datasets
         """
-        print("📊 Loading OULAD datasets...")
+        print("Loading OULAD datasets...")
         
         datasets = {}
         try:
@@ -44,15 +45,15 @@ class OULADDataCleaner:
             # Load merged dataset if available
             try:
                 datasets['merged'] = pd.read_csv(f"{self.data_path}/oulad_merged.csv")
-                print("✅ Merged dataset loaded")
+                print("Merged dataset loaded")
             except:
-                print("⚠️ Merged dataset not found, will create it")
+                print("Merged dataset not found, will create it")
             
-            print("✅ All datasets loaded successfully!")
+            print("All datasets loaded successfully!")
             return datasets
             
         except Exception as e:
-            print(f"❌ Error loading data: {e}")
+            print(f"Error loading data: {e}")
             return None
     
     def analyze_missing_values(self, df, dataset_name):
@@ -62,7 +63,7 @@ class OULADDataCleaner:
             df: DataFrame to analyze
             dataset_name: Name of the dataset
         """
-        print(f"\n🔍 Missing Values Analysis - {dataset_name}")
+        print(f"Missing Values Analysis - {dataset_name}")
         print("-" * 50)
         
         # Calculate missing values
@@ -80,11 +81,11 @@ class OULADDataCleaner:
         missing_summary = missing_summary[missing_summary['Missing_Count'] > 0]
         
         if len(missing_summary) > 0:
-            print("📊 Columns with missing values:")
+            print("Columns with missing values:")
             for _, row in missing_summary.iterrows():
                 print(f"   {row['Column']}: {row['Missing_Count']:,} ({row['Missing_Percentage']:.1f}%)")
         else:
-            print("✅ No missing values found!")
+            print("No missing values found!")
         
         return missing_summary
     
@@ -97,47 +98,31 @@ class OULADDataCleaner:
         Returns:
             DataFrame: Cleaned DataFrame
         """
-        print(f"\n🧹 Handling Missing Values - {dataset_name}")
+        print(f"Handling Missing Values - {dataset_name}")
         print("-" * 50)
         
         df_cleaned = df.copy()
         
-        # Analyze missing values first
-        missing_summary = self.analyze_missing_values(df, dataset_name)
+        # Analyze missing values
+        missing_summary = self.analyze_missing_values(df_cleaned, dataset_name)
         
         if len(missing_summary) == 0:
-            print("✅ No missing values to handle")
+            print("No missing values to handle")
             return df_cleaned
         
-        # Handle missing values based on column type and context
-        for _, row in missing_summary.iterrows():
-            column = row['Column']
-            missing_pct = row['Missing_Percentage']
-            
-            # Categorical columns
-            if df[column].dtype == 'object' or df[column].dtype.name == 'category':
-                if missing_pct < 10:  # Small amount of missing data
-                    # Use mode (most frequent value)
-                    mode_value = df[column].mode()[0] if len(df[column].mode()) > 0 else 'Unknown'
+        # Handle missing values based on data type
+        for column in df_cleaned.columns:
+            if df_cleaned[column].isnull().sum() > 0:
+                if df_cleaned[column].dtype in ['object', 'category']:
+                    # For categorical variables, use mode
+                    mode_value = df_cleaned[column].mode()[0]
                     df_cleaned[column].fillna(mode_value, inplace=True)
-                    print(f"   ✅ {column}: Filled with mode '{mode_value}'")
-                else:  # Large amount of missing data
-                    # Create 'Missing' category
-                    df_cleaned[column].fillna('Missing', inplace=True)
-                    print(f"   ✅ {column}: Filled with 'Missing' category")
-            
-            # Numerical columns
-            else:
-                if missing_pct < 10:  # Small amount of missing data
-                    # Use median for numerical data
-                    median_value = df[column].median()
+                    print(f"   Filled missing values in {column} with mode: {mode_value}")
+                else:
+                    # For numerical variables, use median
+                    median_value = df_cleaned[column].median()
                     df_cleaned[column].fillna(median_value, inplace=True)
-                    print(f"   ✅ {column}: Filled with median {median_value:.2f}")
-                else:  # Large amount of missing data
-                    # Use mean or create a separate indicator
-                    mean_value = df[column].mean()
-                    df_cleaned[column].fillna(mean_value, inplace=True)
-                    print(f"   ✅ {column}: Filled with mean {mean_value:.2f}")
+                    print(f"   Filled missing values in {column} with median: {median_value}")
         
         return df_cleaned
     
@@ -147,109 +132,88 @@ class OULADDataCleaner:
         Args:
             df: DataFrame to analyze
             dataset_name: Name of the dataset
-            columns: Specific columns to check (if None, check all numerical)
+            columns: Specific columns to check for outliers
         Returns:
-            DataFrame: DataFrame with outliers handled
+            tuple: (cleaned DataFrame, outlier summary)
         """
-        print(f"\n📊 Outlier Detection - {dataset_name}")
+        print(f"Outlier Detection - {dataset_name}")
         print("-" * 50)
         
         df_cleaned = df.copy()
+        outlier_summary = {}
         
         # Select numerical columns
         if columns is None:
-            numerical_columns = df.select_dtypes(include=[np.number]).columns.tolist()
+            numerical_cols = df_cleaned.select_dtypes(include=[np.number]).columns
         else:
-            numerical_columns = [col for col in columns if col in df.columns and df[col].dtype in [np.number]]
+            numerical_cols = [col for col in columns if col in df_cleaned.columns]
         
-        outliers_summary = {}
-        
-        for column in numerical_columns:
-            # Skip if column has too many missing values or is an ID
-            if column in ['id_student', 'id_assessment', 'id_site']:
-                continue
-                
-            # Calculate Q1, Q3, and IQR
-            Q1 = df[column].quantile(0.25)
-            Q3 = df[column].quantile(0.75)
+        for column in numerical_cols:
+            Q1 = df_cleaned[column].quantile(0.25)
+            Q3 = df_cleaned[column].quantile(0.75)
             IQR = Q3 - Q1
-            
-            # Define outlier bounds
             lower_bound = Q1 - 1.5 * IQR
             upper_bound = Q3 + 1.5 * IQR
             
-            # Count outliers
-            outliers = df[(df[column] < lower_bound) | (df[column] > upper_bound)]
+            outliers = df_cleaned[(df_cleaned[column] < lower_bound) | (df_cleaned[column] > upper_bound)]
             outlier_count = len(outliers)
-            outlier_percentage = (outlier_count / len(df)) * 100
             
             if outlier_count > 0:
-                print(f"   📈 {column}: {outlier_count:,} outliers ({outlier_percentage:.1f}%)")
+                outlier_percentage = (outlier_count / len(df_cleaned)) * 100
+                print(f"   {column}: {outlier_count} outliers ({outlier_percentage:.1f}%)")
                 print(f"      Range: [{lower_bound:.2f}, {upper_bound:.2f}]")
                 
-                # Handle outliers based on percentage
-                if outlier_percentage < 5:  # Small number of outliers
+                # Handle outliers based on the column
+                if column in ['date_submitted', 'is_banked']:
                     # Cap outliers to bounds
                     df_cleaned[column] = df_cleaned[column].clip(lower=lower_bound, upper=upper_bound)
-                    print(f"      ✅ Capped outliers to bounds")
-                elif outlier_percentage < 15:  # Moderate number of outliers
-                    # Replace with median
-                    median_value = df[column].median()
+                    print(f"      Capped outliers to bounds")
+                else:
+                    # Replace outliers with median
+                    median_value = df_cleaned[column].median()
                     df_cleaned.loc[df_cleaned[column] < lower_bound, column] = median_value
                     df_cleaned.loc[df_cleaned[column] > upper_bound, column] = median_value
-                    print(f"      ✅ Replaced outliers with median {median_value:.2f}")
-                else:  # Large number of outliers
-                    # Keep as is but log the information
-                    print(f"      ⚠️ Large number of outliers - keeping as is")
+                    print(f"      Replaced outliers with median {median_value:.2f}")
                 
-                outliers_summary[column] = {
+                outlier_summary[column] = {
                     'count': outlier_count,
                     'percentage': outlier_percentage,
                     'lower_bound': lower_bound,
                     'upper_bound': upper_bound
                 }
-            else:
-                print(f"   ✅ {column}: No outliers detected")
         
-        return df_cleaned, outliers_summary
+        return df_cleaned, outlier_summary
     
     def encode_categorical_features(self, df, dataset_name):
         """
-        Encode categorical features
+        Encode categorical features using LabelEncoder
         Args:
             df: DataFrame to encode
             dataset_name: Name of the dataset
         Returns:
-            DataFrame: DataFrame with encoded features
+            DataFrame: Encoded DataFrame
         """
-        print(f"\n🔤 Encoding Categorical Features - {dataset_name}")
+        print(f"Encoding Categorical Features - {dataset_name}")
         print("-" * 50)
         
         df_encoded = df.copy()
         
-        # Identify categorical columns
-        categorical_columns = df.select_dtypes(include=['object']).columns.tolist()
+        # Select categorical columns
+        categorical_cols = df_encoded.select_dtypes(include=['object', 'category']).columns
         
-        # Skip ID columns and columns that should remain categorical
-        skip_columns = ['id_student', 'id_assessment', 'id_site', 'code_module', 'code_presentation']
-        categorical_columns = [col for col in categorical_columns if col not in skip_columns]
-        
-        for column in categorical_columns:
-            if column in df_encoded.columns:
-                # Create label encoder
-                le = LabelEncoder()
+        for column in categorical_cols:
+            if column in ['code_module', 'code_presentation']:
+                # Skip these columns as they are identifiers
+                continue
                 
-                # Handle missing values before encoding
-                if df_encoded[column].isnull().any():
-                    df_encoded[column].fillna('Missing', inplace=True)
-                
-                # Fit and transform
-                df_encoded[column] = le.fit_transform(df_encoded[column].astype(str))
-                
-                # Store encoder for later use
-                self.encoders[f"{dataset_name}_{column}"] = le
-                
-                print(f"   ✅ {column}: Encoded {len(le.classes_)} categories")
+            # Create encoder for this column
+            encoder = LabelEncoder()
+            df_encoded[column] = encoder.fit_transform(df_encoded[column].astype(str))
+            
+            # Store encoder for later use
+            self.encoders[f"{dataset_name}_{column}"] = encoder
+            
+            print(f"   {column}: Encoded {len(encoder.classes_)} categories")
         
         return df_encoded
     
@@ -259,41 +223,32 @@ class OULADDataCleaner:
         Args:
             df: DataFrame to scale
             dataset_name: Name of the dataset
-            method: 'standard' or 'minmax'
+            method: Scaling method ('standard' or 'minmax')
         Returns:
-            DataFrame: DataFrame with scaled features
+            DataFrame: Scaled DataFrame
         """
-        print(f"\n📏 Scaling Numerical Features - {dataset_name}")
+        print(f"Scaling Numerical Features - {dataset_name}")
         print("-" * 50)
         
         df_scaled = df.copy()
         
-        # Identify numerical columns
-        numerical_columns = df.select_dtypes(include=[np.number]).columns.tolist()
+        # Select numerical columns (excluding IDs)
+        numerical_cols = df_scaled.select_dtypes(include=[np.number]).columns
+        numerical_cols = [col for col in numerical_cols if 'id_' not in col.lower()]
         
-        # Skip ID columns and target variables
-        skip_columns = ['id_student', 'id_assessment', 'id_site', 'final_result_encoded']
-        numerical_columns = [col for col in numerical_columns if col not in skip_columns]
-        
-        if len(numerical_columns) > 0:
-            # Choose scaler
+        if len(numerical_cols) > 0:
             if method == 'standard':
                 scaler = StandardScaler()
-            elif method == 'minmax':
-                scaler = MinMaxScaler()
             else:
-                raise ValueError("Method must be 'standard' or 'minmax'")
+                scaler = MinMaxScaler()
             
-            # Fit and transform
-            df_scaled[numerical_columns] = scaler.fit_transform(df_scaled[numerical_columns])
+            df_scaled[numerical_cols] = scaler.fit_transform(df_scaled[numerical_cols])
             
             # Store scaler for later use
             self.scalers[f"{dataset_name}_{method}"] = scaler
             
-            print(f"   ✅ Scaled {len(numerical_columns)} numerical columns using {method} scaling")
-            print(f"   📊 Columns: {', '.join(numerical_columns)}")
-        else:
-            print("   ⚠️ No numerical columns to scale")
+            print(f"   Scaled {len(numerical_cols)} numerical columns using {method} scaling")
+            print(f"   Columns: {', '.join(numerical_cols)}")
         
         return df_scaled
     
@@ -305,7 +260,7 @@ class OULADDataCleaner:
         Returns:
             DataFrame: DataFrame with target variable
         """
-        print(f"\n🎯 Creating Target Variable")
+        print("Creating Target Variable")
         print("-" * 50)
         
         df_with_target = df.copy()
@@ -328,7 +283,7 @@ class OULADDataCleaner:
         
         # Print target distribution
         target_dist = df_with_target['success'].value_counts()
-        print(f"📊 Target Variable Distribution:")
+        print("Target Variable Distribution:")
         success_count = target_dist.get(1, 0)
         failure_count = target_dist.get(0, 0)
         print(f"   Success (1): {success_count:,} ({success_count/len(df_with_target)*100:.1f}%)")
@@ -342,7 +297,7 @@ class OULADDataCleaner:
         Returns:
             dict: Dictionary of cleaned datasets
         """
-        print("🚀 Starting OULAD Dataset Cleaning Process")
+        print("Starting OULAD Dataset Cleaning Process")
         print("=" * 60)
         
         # Load data
@@ -354,7 +309,8 @@ class OULADDataCleaner:
         
         # Clean each dataset
         for name, df in datasets.items():
-            print(f"\n{'='*20} Cleaning {name} {'='*20}")
+            print(f"Cleaning {name}")
+            print("=" * 20)
             
             # Handle missing values
             df_cleaned = self.handle_missing_values(df, name)
@@ -380,7 +336,7 @@ class OULADDataCleaner:
             
             cleaned_datasets[name] = df_final
             
-            print(f"✅ {name} cleaned successfully!")
+            print(f"{name} cleaned successfully!")
         
         return cleaned_datasets
     
@@ -391,7 +347,7 @@ class OULADDataCleaner:
             cleaned_datasets: Dictionary of cleaned datasets
             output_path: Directory to save cleaned data
         """
-        print(f"\n💾 Saving Cleaned Data to '{output_path}'...")
+        print(f"Saving Cleaned Data to '{output_path}'...")
         
         import os
         from pathlib import Path
@@ -399,11 +355,12 @@ class OULADDataCleaner:
         # Create output directory
         Path(output_path).mkdir(exist_ok=True)
         
-        # Save each cleaned dataset
-        for name, data in cleaned_datasets.items():
-            file_path = os.path.join(output_path, f"{name}_cleaned.csv")
-            data.to_csv(file_path, index=False)
-            print(f"   ✅ {name}_cleaned.csv: {len(data):,} rows, {len(data.columns)} columns")
+        # Save each dataset
+        for name, df in cleaned_datasets.items():
+            filename = f"{name}_cleaned.csv"
+            filepath = os.path.join(output_path, filename)
+            df.to_csv(filepath, index=False)
+            print(f"   {filename}: {len(df):,} rows, {len(df.columns)} columns")
         
         # Save cleaning metadata
         metadata = {
@@ -417,40 +374,42 @@ class OULADDataCleaner:
         }
         
         import json
-        metadata_path = os.path.join(output_path, "cleaning_metadata.json")
-        with open(metadata_path, 'w') as f:
-            json.dump(metadata, f, indent=4, default=str)
+        metadata_file = os.path.join(output_path, 'cleaning_metadata.json')
+        with open(metadata_file, 'w') as f:
+            json.dump(metadata, f, indent=4)
         
-        print(f"✅ Cleaning metadata saved: {metadata_path}")
-        print(f"📁 Output directory: {output_path}")
+        print(f"Cleaning metadata saved: {metadata_file}")
+        print(f"Output directory: {output_path}")
 
 def main():
     """
-    Main function to clean OULAD datasets
+    Main function to run the OULAD data cleaning process
     """
-    # Initialize cleaner
-    cleaner = OULADDataCleaner()
+    print("Starting OULAD Data Cleaning Process...")
+    print("=" * 50)
     
-    # Clean all datasets
-    cleaned_datasets = cleaner.clean_all_datasets()
+    try:
+        # Initialize the cleaner
+        cleaner = OULADDataCleaner(data_path="oulad_sampled")
+        
+        # Run the complete cleaning process
+        cleaned_datasets = cleaner.clean_all_datasets()
+        
+        # Save the cleaned data
+        cleaner.save_cleaned_data(cleaned_datasets, output_path="oulad_cleaned")
+        
+        print("Data cleaning completed successfully!")
+        print("Cleaned data saved to: oulad_cleaned/")
+        
+    except Exception as e:
+        print(f"Error during data cleaning: {e}")
+        import traceback
+        traceback.print_exc()
+        return 1
     
-    if cleaned_datasets is not None:
-        # Save cleaned data
-        cleaner.save_cleaned_data(cleaned_datasets)
-        
-        print("\n🎉 OULAD Dataset Cleaning Completed Successfully!")
-        print("=" * 60)
-        
-        # Summary
-        print(f"\n📊 Cleaning Summary:")
-        print(f"   Datasets cleaned: {len(cleaned_datasets)}")
-        print(f"   Encoders created: {len(cleaner.encoders)}")
-        print(f"   Scalers created: {len(cleaner.scalers)}")
-        
-        return cleaned_datasets
-    else:
-        print("❌ Cleaning failed!")
-        return None
+    return 0
 
 if __name__ == "__main__":
-    main() 
+    import sys
+    exit_code = main()
+    sys.exit(exit_code) 

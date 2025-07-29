@@ -38,7 +38,7 @@ def main():
             print("   ├── oulad_merged.csv")
             print("   └── dataset_info.txt")
             
-            print(f"\n📊 Dataset Summary:")
+            print(f"\nDataset Summary:")
             print(f"   Students: {result['info']['total_students']:,}")
             print(f"   Assessments: {result['info']['total_assessments']:,}")
             print(f"   VLE Interactions: {result['info']['total_vle_interactions']:,}")

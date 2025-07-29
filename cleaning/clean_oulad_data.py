@@ -7,16 +7,16 @@ Runs the complete data cleaning pipeline for the sampled OULAD dataset
 import sys
 import os
 
-# Add src directory to path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
+# Add current directory to path
+sys.path.append(os.path.dirname(__file__))
 
-from oulad_data_cleaning import OULADDataCleaner
+from data_cleaner import OULADDataCleaner
 
 def main():
     """
     Main function to run the OULAD data cleaning process
     """
-    print("🧹 Starting OULAD Data Cleaning Process...")
+    print("Starting OULAD Data Cleaning Process...")
     print("=" * 50)
     
     try:
@@ -29,11 +29,11 @@ def main():
         # Save the cleaned data
         cleaner.save_cleaned_data(cleaned_datasets, output_path="oulad_cleaned")
         
-        print("\n✅ Data cleaning completed successfully!")
-        print("📁 Cleaned data saved to: oulad_cleaned/")
+        print("Data cleaning completed successfully!")
+        print("Cleaned data saved to: oulad_cleaned/")
         
     except Exception as e:
-        print(f"❌ Error during data cleaning: {e}")
+        print(f"Error during data cleaning: {e}")
         import traceback
         traceback.print_exc()
         return 1
