@@ -1,0 +1,34 @@
+{
+    "encoders": [
+        "studentInfo_gender",
+        "studentInfo_region",
+        "studentInfo_highest_education",
+        "studentInfo_imd_band",
+        "studentInfo_age_band",
+        "studentInfo_disability",
+        "studentInfo_final_result",
+        "studentAssessment_score",
+        "assessments_assessment_type",
+        "assessments_date",
+        "studentRegistration_date_registration",
+        "studentRegistration_date_unregistration",
+        "merged_score",
+        "merged_gender",
+        "merged_region",
+        "merged_highest_education",
+        "merged_imd_band",
+        "merged_age_band",
+        "merged_disability",
+        "merged_final_result"
+    ],
+    "scalers": [
+        "studentInfo_standard",
+        "studentAssessment_standard",
+        "merged_standard"
+    ],
+    "cleaning_summary": {
+        "datasets_cleaned": 6,
+        "total_encoders": 20,
+        "total_scalers": 3
+    }
+}

@@ -329,8 +329,10 @@ class OULADDataCleaner:
         # Print target distribution
         target_dist = df_with_target['success'].value_counts()
         print(f"📊 Target Variable Distribution:")
-        print(f"   Success (1): {target_dist[1]:,} ({target_dist[1]/len(df_with_target)*100:.1f}%)")
-        print(f"   Failure (0): {target_dist[0]:,} ({target_dist[0]/len(df_with_target)*100:.1f}%)")
+        success_count = target_dist.get(1, 0)
+        failure_count = target_dist.get(0, 0)
+        print(f"   Success (1): {success_count:,} ({success_count/len(df_with_target)*100:.1f}%)")
+        print(f"   Failure (0): {failure_count:,} ({failure_count/len(df_with_target)*100:.1f}%)")
         
         return df_with_target
     
