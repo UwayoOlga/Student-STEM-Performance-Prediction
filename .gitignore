@@ -1,0 +1,21 @@
+# Data files (too large for Git)
+*.csv
+oulad_sampled/
+open+university+learning+analytics+dataset (1)/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
