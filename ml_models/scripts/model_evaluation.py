@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Comprehensive Model Evaluation for STEM Performance Prediction
-Evaluates models using multiple metrics and provides detailed analysis
+Enhanced Model Evaluation for STEM Performance Prediction
+Improved visualizations with better font sizes and layout
 """
 
 import pandas as pd
@@ -23,11 +23,22 @@ from imblearn.over_sampling import SMOTE
 import warnings
 warnings.filterwarnings('ignore')
 
-# Set style for better plots
+# Set style for better plots with smaller fonts
 plt.style.use('seaborn-v0_8')
 sns.set_palette("husl")
 
-class ModelEvaluator:
+# Configure matplotlib for better font sizes
+plt.rcParams.update({
+    'font.size': 10,
+    'axes.titlesize': 12,
+    'axes.labelsize': 10,
+    'xtick.labelsize': 9,
+    'ytick.labelsize': 9,
+    'legend.fontsize': 9,
+    'figure.titlesize': 14
+})
+
+class EnhancedModelEvaluator:
     def __init__(self, data_path="oulad_cleaned"):
         self.data_path = data_path
         self.datasets = {}
@@ -208,9 +219,9 @@ class ModelEvaluator:
         X_train_scaled = self.scaler.fit_transform(X_train)
         X_test_scaled = self.scaler.transform(X_test)
         
-        # Define models
+        # Define models with shorter names for better display
         models = {
-            'Logistic Regression': LogisticRegression(random_state=42, max_iter=1000),
+            'Logistic': LogisticRegression(random_state=42, max_iter=1000),
             'Random Forest': RandomForestClassifier(random_state=42, n_estimators=100),
             'Gradient Boosting': GradientBoostingClassifier(random_state=42),
             'SVM': SVC(random_state=42, probability=True)
@@ -251,121 +262,157 @@ class ModelEvaluator:
         
         return results
     
-    def create_comprehensive_visualizations(self, target_name):
-        """Create comprehensive evaluation visualizations"""
-        print(f"Creating comprehensive visualizations for {target_name}...")
+    def create_enhanced_visualizations(self, target_name):
+        """Create enhanced visualizations with better formatting"""
+        print(f"Creating enhanced visualizations for {target_name}...")
         
         results = self.results[target_name]
         
-        # Create comprehensive evaluation dashboard
-        fig, axes = plt.subplots(3, 3, figsize=(20, 16))
-        fig.suptitle(f'Comprehensive Model Evaluation - STEM {target_name.title()}', fontsize=16, fontweight='bold')
+        # Create comprehensive evaluation dashboard with better spacing
+        fig, axes = plt.subplots(3, 3, figsize=(18, 14))
+        fig.suptitle(f'Enhanced Model Evaluation - STEM {target_name.title()}', fontsize=16, fontweight='bold', y=0.98)
         
+        # Shorten model names for better display
         model_names = list(results.keys())
+        short_names = ['Logistic', 'RF', 'GB', 'SVM']
         
         # 1. Accuracy comparison
         accuracies = [results[name]['metrics']['accuracy'] for name in model_names]
-        axes[0, 0].bar(model_names, accuracies, color='skyblue')
-        axes[0, 0].set_title('Model Accuracy Comparison')
-        axes[0, 0].set_ylabel('Accuracy')
-        axes[0, 0].tick_params(axis='x', rotation=45)
+        bars1 = axes[0, 0].bar(short_names, accuracies, color='skyblue', alpha=0.8)
+        axes[0, 0].set_title('Model Accuracy', fontsize=11, fontweight='bold')
+        axes[0, 0].set_ylabel('Accuracy', fontsize=10)
         axes[0, 0].set_ylim(0, 1)
+        axes[0, 0].grid(True, alpha=0.3)
+        
+        # Add value labels on bars
+        for bar, acc in zip(bars1, accuracies):
+            height = bar.get_height()
+            axes[0, 0].text(bar.get_x() + bar.get_width()/2., height + 0.01,
+                           f'{acc:.3f}', ha='center', va='bottom', fontsize=9)
         
         # 2. F1 Score comparison
         f1_scores = [results[name]['metrics']['f1_score'] for name in model_names]
-        axes[0, 1].bar(model_names, f1_scores, color='lightgreen')
-        axes[0, 1].set_title('Model F1 Score Comparison')
-        axes[0, 1].set_ylabel('F1 Score')
-        axes[0, 1].tick_params(axis='x', rotation=45)
+        bars2 = axes[0, 1].bar(short_names, f1_scores, color='lightgreen', alpha=0.8)
+        axes[0, 1].set_title('Model F1 Score', fontsize=11, fontweight='bold')
+        axes[0, 1].set_ylabel('F1 Score', fontsize=10)
         axes[0, 1].set_ylim(0, 1)
+        axes[0, 1].grid(True, alpha=0.3)
+        
+        # Add value labels on bars
+        for bar, f1 in zip(bars2, f1_scores):
+            height = bar.get_height()
+            axes[0, 1].text(bar.get_x() + bar.get_width()/2., height + 0.01,
+                           f'{f1:.3f}', ha='center', va='bottom', fontsize=9)
         
         # 3. AUC comparison
         auc_scores = [results[name]['metrics']['auc_roc'] for name in model_names]
-        axes[0, 2].bar(model_names, auc_scores, color='orange')
-        axes[0, 2].set_title('Model AUC Comparison')
-        axes[0, 2].set_ylabel('AUC')
-        axes[0, 2].tick_params(axis='x', rotation=45)
+        bars3 = axes[0, 2].bar(short_names, auc_scores, color='orange', alpha=0.8)
+        axes[0, 2].set_title('Model AUC', fontsize=11, fontweight='bold')
+        axes[0, 2].set_ylabel('AUC', fontsize=10)
         axes[0, 2].set_ylim(0, 1)
+        axes[0, 2].grid(True, alpha=0.3)
+        
+        # Add value labels on bars
+        for bar, auc in zip(bars3, auc_scores):
+            height = bar.get_height()
+            axes[0, 2].text(bar.get_x() + bar.get_width()/2., height + 0.01,
+                           f'{auc:.3f}', ha='center', va='bottom', fontsize=9)
         
         # 4. Precision vs Recall
         precisions = [results[name]['metrics']['precision'] for name in model_names]
         recalls = [results[name]['metrics']['recall'] for name in model_names]
-        axes[1, 0].scatter(precisions, recalls, s=100, alpha=0.7)
-        for i, name in enumerate(model_names):
-            axes[1, 0].annotate(name, (precisions[i], recalls[i]), xytext=(5, 5), textcoords='offset points')
-        axes[1, 0].set_xlabel('Precision')
-        axes[1, 0].set_ylabel('Recall')
-        axes[1, 0].set_title('Precision vs Recall')
+        scatter = axes[1, 0].scatter(precisions, recalls, s=100, alpha=0.7, c=['blue', 'red', 'green', 'purple'])
+        for i, name in enumerate(short_names):
+            axes[1, 0].annotate(name, (precisions[i], recalls[i]), xytext=(5, 5), 
+                               textcoords='offset points', fontsize=9, fontweight='bold')
+        axes[1, 0].set_xlabel('Precision', fontsize=10)
+        axes[1, 0].set_ylabel('Recall', fontsize=10)
+        axes[1, 0].set_title('Precision vs Recall', fontsize=11, fontweight='bold')
         axes[1, 0].grid(True, alpha=0.3)
+        axes[1, 0].set_xlim(0.6, 1.0)
+        axes[1, 0].set_ylim(0.6, 1.0)
         
         # 5. ROC Curves
-        for name in model_names:
+        colors = ['blue', 'red', 'green', 'purple']
+        for i, name in enumerate(model_names):
             fpr, tpr, _ = roc_curve(results[name]['y_test'], results[name]['y_pred_proba'])
             auc = results[name]['metrics']['auc_roc']
-            axes[1, 1].plot(fpr, tpr, label=f'{name} (AUC = {auc:.3f})')
-        axes[1, 1].plot([0, 1], [0, 1], 'k--', alpha=0.5)
-        axes[1, 1].set_xlabel('False Positive Rate')
-        axes[1, 1].set_ylabel('True Positive Rate')
-        axes[1, 1].set_title('ROC Curves')
-        axes[1, 1].legend()
+            axes[1, 1].plot(fpr, tpr, color=colors[i], label=f'{short_names[i]} (AUC={auc:.3f})', linewidth=2)
+        axes[1, 1].plot([0, 1], [0, 1], 'k--', alpha=0.5, linewidth=1)
+        axes[1, 1].set_xlabel('False Positive Rate', fontsize=10)
+        axes[1, 1].set_ylabel('True Positive Rate', fontsize=10)
+        axes[1, 1].set_title('ROC Curves', fontsize=11, fontweight='bold')
+        axes[1, 1].legend(fontsize=9, loc='lower right')
         axes[1, 1].grid(True, alpha=0.3)
         
         # 6. Precision-Recall Curves
-        for name in model_names:
+        for i, name in enumerate(model_names):
             precision, recall, _ = precision_recall_curve(results[name]['y_test'], results[name]['y_pred_proba'])
             ap = results[name]['metrics']['average_precision']
-            axes[1, 2].plot(recall, precision, label=f'{name} (AP = {ap:.3f})')
-        axes[1, 2].set_xlabel('Recall')
-        axes[1, 2].set_ylabel('Precision')
-        axes[1, 2].set_title('Precision-Recall Curves')
-        axes[1, 2].legend()
+            axes[1, 2].plot(recall, precision, color=colors[i], 
+                           label=f'{short_names[i]} (AP={ap:.3f})', linewidth=2)
+        axes[1, 2].set_xlabel('Recall', fontsize=10)
+        axes[1, 2].set_ylabel('Precision', fontsize=10)
+        axes[1, 2].set_title('Precision-Recall Curves', fontsize=11, fontweight='bold')
+        axes[1, 2].legend(fontsize=9, loc='lower left')
         axes[1, 2].grid(True, alpha=0.3)
         
         # 7. Confusion Matrix for best model
         best_model_name = max(results.keys(), key=lambda x: results[x]['metrics']['f1_score'])
         cm = confusion_matrix(results[best_model_name]['y_test'], results[best_model_name]['y_pred'])
-        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=axes[2, 0])
-        axes[2, 0].set_title(f'Confusion Matrix - {best_model_name}')
-        axes[2, 0].set_xlabel('Predicted')
-        axes[2, 0].set_ylabel('Actual')
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=axes[2, 0], 
+                   cbar_kws={'label': 'Count'}, annot_kws={'size': 10})
+        axes[2, 0].set_title(f'Confusion Matrix - {short_names[model_names.index(best_model_name)]}', 
+                            fontsize=11, fontweight='bold')
+        axes[2, 0].set_xlabel('Predicted', fontsize=10)
+        axes[2, 0].set_ylabel('Actual', fontsize=10)
         
         # 8. Cross-validation scores
         cv_means = [results[name]['metrics']['cv_f1_mean'] for name in model_names]
         cv_stds = [results[name]['metrics']['cv_f1_std'] for name in model_names]
-        axes[2, 1].bar(model_names, cv_means, yerr=cv_stds, capsize=5, color='lightcoral')
-        axes[2, 1].set_title('Cross-Validation F1 Scores')
-        axes[2, 1].set_ylabel('CV F1 Score')
-        axes[2, 1].tick_params(axis='x', rotation=45)
+        bars4 = axes[2, 1].bar(short_names, cv_means, yerr=cv_stds, capsize=5, 
+                              color='lightcoral', alpha=0.8)
+        axes[2, 1].set_title('Cross-Validation F1 Scores', fontsize=11, fontweight='bold')
+        axes[2, 1].set_ylabel('CV F1 Score', fontsize=10)
         axes[2, 1].set_ylim(0, 1)
+        axes[2, 1].grid(True, alpha=0.3)
+        
+        # Add value labels on bars
+        for bar, cv_mean in zip(bars4, cv_means):
+            height = bar.get_height()
+            axes[2, 1].text(bar.get_x() + bar.get_width()/2., height + 0.01,
+                           f'{cv_mean:.3f}', ha='center', va='bottom', fontsize=9)
         
         # 9. Advanced metrics comparison
         advanced_metrics = ['cohen_kappa', 'matthews_corrcoef', 'brier_score']
-        metric_names = ['Cohen Kappa', 'Matthews CorrCoef', 'Brier Score']
+        metric_names = ['Cohen Kappa', 'Matthews Corr', 'Brier Score']
         
-        x = np.arange(len(model_names))
+        x = np.arange(len(short_names))
         width = 0.25
         
         for i, (metric, metric_name) in enumerate(zip(advanced_metrics, metric_names)):
             values = [results[name]['metrics'][metric] for name in model_names]
             axes[2, 2].bar(x + i*width, values, width, label=metric_name, alpha=0.8)
         
-        axes[2, 2].set_xlabel('Models')
-        axes[2, 2].set_ylabel('Score')
-        axes[2, 2].set_title('Advanced Metrics Comparison')
+        axes[2, 2].set_xlabel('Models', fontsize=10)
+        axes[2, 2].set_ylabel('Score', fontsize=10)
+        axes[2, 2].set_title('Advanced Metrics', fontsize=11, fontweight='bold')
         axes[2, 2].set_xticks(x + width)
-        axes[2, 2].set_xticklabels(model_names, rotation=45)
-        axes[2, 2].legend()
+        axes[2, 2].set_xticklabels(short_names, fontsize=9)
+        axes[2, 2].legend(fontsize=8, loc='upper right')
+        axes[2, 2].grid(True, alpha=0.3)
         
-        plt.tight_layout()
-        plt.savefig(f'comprehensive_evaluation_{target_name.lower()}.png', dpi=300, bbox_inches='tight')
+        # Adjust layout to prevent overlapping
+        plt.tight_layout(rect=[0, 0, 1, 0.96])
+        plt.savefig(f'enhanced_evaluation_{target_name.lower()}.png', dpi=300, bbox_inches='tight')
         plt.show()
         
-        print(f"Comprehensive evaluation visualizations saved as 'comprehensive_evaluation_{target_name.lower()}.png'")
+        print(f"Enhanced evaluation visualizations saved as 'enhanced_evaluation_{target_name.lower()}.png'")
     
     def generate_detailed_report(self):
         """Generate detailed evaluation report"""
         print("\n" + "="*80)
-        print("COMPREHENSIVE MODEL EVALUATION REPORT")
+        print("ENHANCED MODEL EVALUATION REPORT")
         print("="*80)
         
         for target_name, results in self.results.items():
@@ -406,7 +453,7 @@ class ModelEvaluator:
     
     def main(self):
         """Main evaluation pipeline"""
-        print("COMPREHENSIVE MODEL EVALUATION")
+        print("ENHANCED MODEL EVALUATION")
         print("="*50)
         
         # Prepare dataset
@@ -418,7 +465,7 @@ class ModelEvaluator:
         print("="*50)
         X_excellence, y_excellence = self.prepare_features_and_targets(stem_students, 'stem_excellence')
         self.evaluate_models(X_excellence, y_excellence, 'Excellence')
-        self.create_comprehensive_visualizations('Excellence')
+        self.create_enhanced_visualizations('Excellence')
         
         # Evaluate Success prediction
         print("\n" + "="*50)
@@ -426,15 +473,15 @@ class ModelEvaluator:
         print("="*50)
         X_success, y_success = self.prepare_features_and_targets(stem_students, 'stem_success')
         self.evaluate_models(X_success, y_success, 'Success')
-        self.create_comprehensive_visualizations('Success')
+        self.create_enhanced_visualizations('Success')
         
         # Generate detailed report
         self.generate_detailed_report()
         
         print("\n" + "="*50)
-        print("COMPREHENSIVE EVALUATION COMPLETED")
+        print("ENHANCED EVALUATION COMPLETED")
         print("="*50)
 
 if __name__ == "__main__":
-    evaluator = ModelEvaluator()
+    evaluator = EnhancedModelEvaluator()
     evaluator.main() 
