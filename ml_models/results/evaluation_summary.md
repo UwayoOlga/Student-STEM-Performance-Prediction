@@ -79,22 +79,22 @@ The evaluation of the STEM performance prediction models shows **excellent perfo
 ## 📈 Model Comparison Analysis
 
 ### Performance Ranking
-1. **Random Forest** ⭐⭐⭐⭐⭐
+1. **Random Forest** 5/5
    - Best overall performance
    - Excellent across all metrics
    - Most reliable predictions
 
-2. **Gradient Boosting** ⭐⭐⭐⭐⭐
+2. **Gradient Boosting** 5/5
    - Nearly identical to Random Forest
    - Slightly higher accuracy (0.914)
    - Excellent ensemble method
 
-3. **SVM** ⭐⭐⭐⭐
+3. **SVM** 4/5
    - Good performance
    - Moderate complexity
    - Suitable for smaller datasets
 
-4. **Logistic Regression** ⭐⭐⭐
+4. **Logistic Regression** 3/5
    - Baseline performance
    - Interpretable model
    - Good starting point
@@ -178,7 +178,7 @@ Actual    0 (Negative)  1 (Positive)
 
 ## 📋 Evaluation Conclusion
 
-### Overall Assessment: **EXCELLENT** ⭐⭐⭐⭐⭐
+### Overall Assessment: **EXCELLENT** 5/5
 
 The STEM performance prediction models demonstrate **outstanding performance** with:
 
@@ -193,7 +193,7 @@ The STEM performance prediction models demonstrate **outstanding performance** w
 3. **Appropriate model selection** (Random Forest)
 4. **Comprehensive evaluation** using multiple metrics
 
-### Deployment Readiness: **HIGH** ✅
+### Deployment Readiness: **HIGH**
 
 The models are ready for deployment in educational settings with:
 - High confidence predictions

@@ -67,9 +67,9 @@ The project incorporates **three major innovative approaches**:
 | Approach | F1 Score | AUC | Accuracy | Innovation Level |
 |----------|----------|-----|----------|------------------|
 | **Original Models** | 0.911 | 0.965 | 0.911 | Baseline |
-| **Innovative Models** | 0.923 | 0.972 | 0.923 | ⭐⭐⭐ |
-| **Custom Ensemble** | 0.928 | 0.975 | 0.928 | ⭐⭐⭐⭐⭐ |
-| **Creative Approach** | 0.931 | 0.978 | 0.931 | ⭐⭐⭐⭐⭐ |
+| **Innovative Models** | 0.923 | 0.972 | 0.923 | 3/5 |
+| **Custom Ensemble** | 0.928 | 0.975 | 0.928 | 5/5 |
+| **Creative Approach** | 0.931 | 0.978 | 0.931 | 5/5 |
 
 ### Key Improvements:
 - **+2.2% F1 Score** improvement over baseline
@@ -205,14 +205,14 @@ python ml_models/scripts/ml_models_improved.py
 ## 🏆 Innovation Summary
 
 ### Key Achievements:
-- ✅ **2.2% Performance Improvement** over baseline models
-- ✅ **Dynamic Ensemble Methods** with adaptive weighting
-- ✅ **Creative Feature Engineering** with domain expertise
-- ✅ **Adaptive Sampling Pipeline** for imbalance handling
-- ✅ **Comprehensive Evaluation** with multiple metrics
-- ✅ **Production-Ready Implementation** with proper documentation
+- **2.2% Performance Improvement** over baseline models
+- **Dynamic Ensemble Methods** with adaptive weighting
+- **Creative Feature Engineering** with domain expertise
+- **Adaptive Sampling Pipeline** for imbalance handling
+- **Comprehensive Evaluation** with multiple metrics
+- **Production-Ready Implementation** with proper documentation
 
-### Innovation Score: **⭐⭐⭐⭐⭐ (5/5)**
+### Innovation Score: **5/5 (Excellent)**
 
 The project successfully incorporates multiple innovative approaches that significantly enhance model performance while maintaining interpretability and practical applicability in educational settings.
 

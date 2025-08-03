@@ -185,36 +185,23 @@ class OULADDataCleaner:
         return df_cleaned, outlier_summary
     
     def encode_categorical_features(self, df, dataset_name):
-        """
-        Encode categorical features using LabelEncoder
-        Args:
-            df: DataFrame to encode
-            dataset_name: Name of the dataset
-        Returns:
-            DataFrame: Encoded DataFrame
-        """
+
         print(f"Encoding Categorical Features - {dataset_name}")
         print("-" * 50)
-        
         df_encoded = df.copy()
-        
-        # Select categorical columns
+      
         categorical_cols = df_encoded.select_dtypes(include=['object', 'category']).columns
         
         for column in categorical_cols:
             if column in ['code_module', 'code_presentation']:
-                # Skip these columns as they are identifiers
+       
                 continue
-                
-            # Create encoder for this column
+         
             encoder = LabelEncoder()
             df_encoded[column] = encoder.fit_transform(df_encoded[column].astype(str))
-            
-            # Store encoder for later use
+          
             self.encoders[f"{dataset_name}_{column}"] = encoder
-            
             print(f"   {column}: Encoded {len(encoder.classes_)} categories")
-        
         return df_encoded
     
     def scale_numerical_features(self, df, dataset_name, method='standard'):
