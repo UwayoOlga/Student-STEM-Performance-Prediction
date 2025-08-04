@@ -12,7 +12,7 @@
 ## PART 1: PROBLEM DEFINITION & PLANNING
 
 ### I. Sector Selection
-**Selected Sector:** ☑️ **Education** ☐ Agriculture ☐ Health ☐ Environment ☐ Energy ☐ Government ☐ Retail ☐ Finance ☐ Transportation ☐ Other
+**Selected Sector:** **Education**  
 
 ### II. Problem Statement
 **"Can we predict student success and excellence in STEM (Science, Technology, Engineering, Mathematics) subjects using machine learning techniques based on demographic, academic, and behavioral data?"
@@ -26,11 +26,9 @@
 - **Educational Inequality**: Students from disadvantaged backgrounds face higher STEM failure rates without targeted support
 
 **Specific Objectives:**
-- Develop predictive models to identify students at risk of STEM failure before they fall behind
-- Create early warning systems for educational institutions to intervene proactively
+- Develop predictive models to identify students at risk of STEM failure before they fall behind 
 - Analyze demographic and behavioral factors contributing to STEM success/failure
-- Provide data-driven recommendations for educational policy and resource allocation
-- Support personalized learning pathways for different student groups
+- Provide data-driven recommendations for educational policy and resource allocation 
 
 ### III. Dataset Identification
 
@@ -38,11 +36,10 @@
 - **Dataset Title:** Open University Learning Analytics Dataset (OULAD)
 - **Source Links:**
   - [Official University Page](https://analyse.kmi.open.ac.uk/#open-dataset)
-  - [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/349/open%2Buniversity%2Blearning%2Banalytics%2Bdataset)
 - **Number of Rows:** 28,784 unique students (original dataset)
 - **Number of Columns:** 15+ features across multiple tables
-- **Data Structure:** ☑️ **Structured (CSV)** ☐ Unstructured (Text, Images)
-- **Data Status:** ☐ Clean ☑️ **Requires Preprocessing**
+- **Data Structure:** **Structured (CSV)**  
+- **Data Status:** **Requires Preprocessing**
 
 #### Dataset Overview:
 - **Original Dataset:** 28,784 unique students
@@ -51,6 +48,20 @@
 - **STEM Students:** 2,722 students (37.8% of sampled data)
 - **Subjects:** 7 courses (3 STEM + 4 Non-STEM)
 - **Time Period:** Multiple academic years (2013-2014)
+##  Open University Learning Analytics Dataset – File Summary
+
+| **File Name**              | **Number of Columns** |
+|---------------------------|------------------------|
+| `studentInfo.csv`         | 12                     |
+| `courses.csv`             | 3                      |
+| `studentRegistration.csv` | 5                      |
+| `studentAssessment.csv`   | 5                      |
+| `assessments.csv`         | 6                      |
+| `studentVle.csv`          | 6                      |
+| `vle.csv`                 | 6                      |
+
+> **Total files:** 7  
+> **Column count range:** 3 to 12 depending on the file.
 
 #### Technical Sampling Methodology:
 
@@ -59,7 +70,13 @@
 - **Sample Size:** 7,196 students (25% of population)
 - **Sampling Technique:** Simple Random Sampling without replacement
 - **Random Seed:** 42 (for reproducibility and consistency)
-
+**Validation Metrics:**
+- **Original Students:** 28,784
+- **Sampled Students:** 7,196 (25.0% exactly)
+- **Original Assessments:** ~173,716 records
+- **Sampled Assessments:** 43,429 records (25.0% proportionally)
+- **Original VLE Interactions:** ~10,886,640 records
+- **Sampled VLE Interactions:** 2,721,661 records (25.0% proportionally)
 **Sampling Process:**
 
 1. **Student ID Extraction:** Identified all unique student IDs from the original dataset
@@ -190,20 +207,6 @@ Student-STEM-Performance-Prediction/
 - **Visualization**: Multi-page Power BI dashboard with AI-powered insights
 - **Documentation**: Comprehensive analysis and findings
 
-**Data Integrity:**
-- **Referential Integrity:** All relationships between tables are preserved
-- **Completeness:** All student-related records for sampled students are included
-- **Consistency:** Assessment scores, VLE interactions, and registration data remain consistent
-- **Quality:** No data loss or corruption during the sampling process
-
-**Validation Metrics:**
-- **Original Students:** 28,784
-- **Sampled Students:** 7,196 (25.0% exactly)
-- **Original Assessments:** ~173,716 records
-- **Sampled Assessments:** 43,429 records (25.0% proportionally)
-- **Original VLE Interactions:** ~10,886,640 records
-- **Sampled VLE Interactions:** 2,721,661 records (25.0% proportionally)
-
 **Sampling Execution Results:**
 ```python
 print(f"Total students: {total_students:,}")
@@ -215,25 +218,6 @@ Sample size: 7,196
 Sampling ratio: 0.25
 ```
 
-**Final Dataset Summary:**
-```python
-print("Dataset Summary:")
-print(f"Students: {result['info']['total_students']:,}")
-print(f"Assessments: {result['info']['total_assessments']:,}")
-print(f"VLE Interactions: {result['info']['total_vle_interactions']:,}")
-print(f"Courses: {result['info']['courses']}")
-print(f"Presentations: {result['info']['presentations']}")
-
-Dataset Summary:
-Students: 7,196
-Assessments: 43,429
-VLE Interactions: 2,721,661
-Courses: 7
-Presentations: 4
-```
-
----
-
 ## PART 2: PYTHON ANALYTICS TASKS
 
 ### 1. Data Cleaning and Preprocessing
@@ -242,11 +226,9 @@ Presentations: 4
 **Approach:** Comprehensive missing value analysis and imputation strategies
 
 **Analysis Results:**
-The imported dataset shows no missing values, indicating high data quality from the original OULAD dataset.
 
 ![Missing Values Analysis](cleaning/nomissing.png)
-
-*Figure: Missing values analysis showing clean dataset with no null values*
+ 
 
 **Missing Values Handling Implementation:**
 ```python
@@ -1279,132 +1261,7 @@ The Power BI dashboard provides an interactive visualization platform for explor
 ### Data Sources
 - **Primary Dataset:** `comprehensive_data.csv` - Merged student data with custom features and model predictions
 - **Supporting Tables:** `summary_stats.csv`, `performance_by_subject.csv`, `feature_importance.csv`
-
-### Dashboard Pages
-
-#### **Page 1: Home Dashboard**
-**Key Performance Indicators (KPIs):**
-- **Total Students:** 7,196 unique students from sampled dataset
-- **STEM Students:** 2,722 students (37.8% of total population)
-- **Overall Success Rate:** 47.4% (3,409 successful students)
-- **STEM Excellence Rate:** 10.4% (284 students achieved distinction)
-
-**AI-Powered Visuals:**
-- **Key Influencers Visual:** Identifies factors most strongly influencing STEM success
-- **Q&A Natural Language Interface:** Allows users to ask questions about the data
-- **Smart Narrative:** Provides automated insights and trends
-
-#### **Page 2: Regional Analysis**
-**Geographic Distribution:**
-- **Filled Map Visual:** Regional distribution of students with risk level coloring
-- **Regional Performance Metrics:** Success rates by geographic region
-- **Socioeconomic Analysis:** IMD band distribution across regions
-
-**Interactive Features:**
-- **Region Slicer:** Filter data by specific geographic regions
-- **Risk Level Legend:** Color-coded risk assessment (High, Medium, Low)
-- **Drill-down Capability:** Explore individual student details
-
-#### **Page 3: Performance Analytics**
-**Model Performance Metrics:**
-- **Gauge Charts:** Model accuracy, precision, and recall visualization
-- **ROC Curves:** Model performance comparison across algorithms
-- **Confusion Matrix:** Detailed prediction accuracy breakdown
-
-**Student Performance Analysis:**
-- **Bar Charts:** Success rates by subject area and demographic factors
-- **Scatter Plots:** Relationship between predicted and actual performance
-- **Trend Analysis:** Performance patterns over time
-
-#### **Page 4: Risk Assessment Matrix**
-**Risk Analysis Dashboard:**
-- **Matrix Visual:** Student count by region and risk level
-- **Risk Distribution:** Probability-based risk categorization
-- **Intervention Recommendations:** Data-driven support suggestions
-
-### Advanced DAX Formulas
-
-#### **1. Excellence Probability Bins**
-```dax
-Excellence Probability Bins = 
-SWITCH(
-    TRUE(),
-    comprehensive_data[excellence_probability] <= 0.1, "0.0-0.1",
-    comprehensive_data[excellence_probability] <= 0.2, "0.1-0.2",
-    comprehensive_data[excellence_probability] <= 0.3, "0.2-0.3",
-    comprehensive_data[excellence_probability] <= 0.4, "0.3-0.4",
-    comprehensive_data[excellence_probability] <= 0.5, "0.4-0.5",
-    comprehensive_data[excellence_probability] <= 0.6, "0.5-0.6",
-    comprehensive_data[excellence_probability] <= 0.7, "0.6-0.7",
-    comprehensive_data[excellence_probability] <= 0.8, "0.7-0.8",
-    comprehensive_data[excellence_probability] <= 0.9, "0.8-0.9",
-    "0.9-1.0"
-)
-```
-**Purpose:** Categorizes students into probability bins for excellence prediction analysis
-**Innovation:** Enables granular analysis of model confidence levels
-
-#### **2. Success Rate by Excellence Probability**
-```dax
-Success Rate by Excellence Probability = 
-CALCULATE(
-    AVERAGE(comprehensive_data[stem_success]),
-    ALLEXCEPT(comprehensive_data, comprehensive_data[Excellence Probability Bins])
-)
-```
-**Purpose:** Calculates actual success rates within each probability bin
-**Innovation:** Validates model calibration and identifies prediction accuracy patterns
-
-#### **3. Student Count by Risk**
-```dax
-Student Count by Risk = 
-CALCULATE(
-    COUNTROWS(comprehensive_data),
-    ALLEXCEPT(comprehensive_data, comprehensive_data[region], comprehensive_data[risk_level])
-)
-```
-**Purpose:** Counts unique students by region and risk level for matrix visualization
-**Innovation:** Enables geographic risk analysis and intervention planning
-
-### Dashboard Screenshots and Descriptions
-
-#### **Home Dashboard Screenshots:**
-- ![Home Dashboard Overview](powerbi/dashboard_screenshots/home_dashboard.png) - **Main dashboard overview** showing key performance indicators, AI-powered Key Influencers visual identifying factors affecting STEM success, and Smart Narrative providing automated insights about student performance patterns
-- ![KPI Cards](powerbi/dashboard_screenshots/kpi_cards.png) - **Key performance indicator cards** displaying total students (7,196), STEM students (2,722), overall success rate (47.4%), and STEM excellence rate (10.4%) with color-coded performance indicators
-
-#### **Regional Analysis Screenshots:**
-- ![Regional Distribution Map](powerbi/dashboard_screenshots/regional_map.png) - **Geographic distribution map** showing student distribution across UK regions with color-coded risk levels (High/Medium/Low), enabling identification of geographic patterns in STEM performance and risk factors
-- ![Regional Performance Metrics](powerbi/dashboard_screenshots/regional_metrics.png) - **Regional performance analysis** displaying success rates, excellence rates, and socioeconomic indicators by geographic region, highlighting regional variations in educational outcomes
-
-#### **Performance Analytics Screenshots:**
-- ![Model Performance Gauge](powerbi/dashboard_screenshots/model_gauge.png) - **Model performance gauge charts** showing accuracy (91.1%), precision (91.0%), and recall (91.2%) metrics with visual indicators of model effectiveness for STEM success prediction
-- ![Performance Comparison](powerbi/dashboard_screenshots/performance_comparison.png) - **Performance comparison charts** displaying success rates by subject area (Engineering 14.7%, Science 9.3%, Computing 8.3%) and demographic factors, enabling subject-specific analysis
-
-#### **Risk Assessment Screenshots:**
-- ![Risk Matrix](powerbi/dashboard_screenshots/risk_matrix.png) - **Risk assessment matrix** showing student count by region and risk level using the DAX formula for accurate counting, enabling identification of high-risk student populations for targeted interventions
-- ![Excellence Probability Distribution](powerbi/dashboard_screenshots/excellence_probability.png) - **Excellence probability distribution** using the DAX binning formula to categorize students into probability ranges, showing the distribution of model confidence levels for excellence prediction
-
-### Interactive Features
-
-#### **Navigation and Filtering:**
-- **Multi-page Navigation:** Directional buttons for seamless page transitions
-- **Slicers and Filters:** Region, subject, risk level, and demographic filters
-- **Drill-down Capability:** From regional to individual student level analysis
-
-#### **AI-Powered Insights:**
-- **Key Influencers:** Identifies factors most strongly affecting STEM success
-- **Q&A Interface:** Natural language query capability for data exploration
-- **Smart Narrative:** Automated insight generation and trend identification
-
-#### **Advanced Visualizations:**
-- **Filled Maps:** Geographic visualization with risk level coloring
-- **Matrix Visuals:** Multi-dimensional analysis with DAX-powered calculations
-- **Gauge Charts:** Performance metrics with clear visual indicators
-
-
-
----
-
+ 
 ## Power BI Dashboard Implementation
 
 ### Dashboard Overview
@@ -1454,14 +1311,45 @@ CALCULATE(
 ### Dashboard Screenshots and Descriptions
 
 #### **Home Dashboard:**
-- ![Home Dashboard Overview](./powerbi/Dashboard_screenshots/home.png) - **Main dashboard overview** showing key performance indicators, AI-powered Key Influencers visual identifying factors affecting STEM success, and Smart Narrative providing automated insights about student performance patterns
+![Home Dashboard Overview](./powerbi/Dashboard_screenshots/home.png) -
+
+**Main dashboard overview** showing key performance indicators, AI-powered Key Influencers visual identifying factors affecting STEM success, and Smart Narrative providing automated insights about student performance patterns
+**Key Performance Indicators (KPIs):**
+- **Total Students:** 7,196 unique students from sampled dataset
+- **STEM Students:** 2,722 students (37.8% of total population)
+- **Overall Success Rate:** 47.4% (3,409 successful students)
+- **STEM Excellence Rate:** 10.4% (284 students achieved distinction)
+
+**AI-Powered Visuals:**
+- **Key Influencers Visual:** Identifies factors most strongly influencing STEM success
+- **Q&A Natural Language Interface:** Allows users to ask questions about the data
+- **Smart Narrative:** Provides automated insights and trends
 
 #### **Student Demographics:**
-- ![Student Demographics Analysis](./powerbi/Dashboard_screenshots/student_demographics.png) - **Student demographic analysis** displaying age distribution, gender balance, education levels, and regional distribution with interactive filters for comprehensive population analysis
+![Student Demographics Analysis](./powerbi/Dashboard_screenshots/student_demographics.png) - **Student demographic analysis** displaying age distribution, gender balance, education levels, and regional distribution with interactive filters for comprehensive population analysis
+#### **Page 2: Regional Analysis**
+**Geographic Distribution:**
+- **Filled Map Visual:** Regional distribution of students with risk level coloring
+- **Regional Performance Metrics:** Success rates by geographic region
+- **Socioeconomic Analysis:** IMD band distribution across regions
+
+**Interactive Features:**
+- **Region Slicer:** Filter data by specific geographic regions
+- **Risk Level Legend:** Color-coded risk assessment (High, Medium, Low)
+- **Drill-down Capability:** Explore individual student details
 
 #### **Academic Performance:**
-- ![Academic Performance Metrics](./powerbi/Dashboard_screenshots/academic_performance.png) - **Academic performance dashboard** showing success rates by subject area, excellence rates, and performance trends with gauge charts and bar visualizations for clear metric presentation
+![Academic Performance Metrics](./powerbi/Dashboard_screenshots/academic_performance.png) - **Academic performance dashboard** showing success rates by subject area, excellence rates, and performance trends with gauge charts and bar visualizations for clear metric presentation
+#### **Page 3: Performance Analytics**
+**Model Performance Metrics:**
+- **Gauge Charts:** Model accuracy, precision, and recall visualization
+- **ROC Curves:** Model performance comparison across algorithms
+- **Confusion Matrix:** Detailed prediction accuracy breakdown
 
+**Student Performance Analysis:**
+- **Bar Charts:** Success rates by subject area and demographic factors
+- **Scatter Plots:** Relationship between predicted and actual performance
+- **Trend Analysis:** Performance patterns over time
 #### **Subject Comparison:**
 - ![Subject Performance Comparison](./powerbi/Dashboard_screenshots/subject_comparision.png) - **Subject performance comparison** displaying success rates by subject area (Engineering 14.7%, Science 9.3%, Computing 8.3%) and demographic factors, enabling subject-specific analysis and performance benchmarking
 
@@ -1616,27 +1504,9 @@ Success indicators in STEM performance prediction refer to measurable factors th
 
 ---
 
-## Innovation Summary
-
-### Key Achievements:
-- **2.0% Performance Improvement** over baseline models
-- **Dynamic Ensemble Methods** with adaptive weighting
-- **Creative Feature Engineering** with domain expertise
-- **Adaptive Sampling Pipeline** for imbalance handling
-- **Comprehensive Evaluation** with multiple metrics
-- **Production-Ready Implementation** with proper documentation
-
-### Innovation Score: **5/5 (Excellent)**
-
----
-
 ## References
 
-1. **Dataset Source:** Kuzilek, J., Hlosta, M., & Zdrahal, Z. (2015). Open University Learning Analytics dataset [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5KK69
-2. **Ensemble Methods:** Dietterich, T. G. (2000). Ensemble methods in machine learning.
-3. **Feature Engineering:** Guyon, I., & Elisseeff, A. (2003). An introduction to variable and feature selection.
-4. **Educational Analytics:** Baker, R. S. (2010). Data mining for education.
+1. **Dataset Source:** Kuzilek, J., Hlosta, M., & Zdrahal, Z. (2015). Open University Learning Analytics dataset [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5KK69 
 
 ---
-
-*This project demonstrates the power of combining domain expertise with advanced machine learning techniques to create practical, high-performing predictive models for educational applications.* 
+ 
