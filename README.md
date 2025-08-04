@@ -137,13 +137,13 @@ Student-STEM-Performance-Prediction/
 │   ├── data_cleaner.py             # Main data cleaning module
 │   └── nomissing.png               # Missing data visualization
 ├── eda/                            # Exploratory Data Analysis
-│   ├── exploratory_analysis.py     # Main EDA script
-│   ├── stem_analysis.py            # STEM-specific analysis
+│   ├── exploratory_analysis.py     # Main EDA script (optimized for readability)
+│   ├── stem_analysis.py            # STEM-specific analysis (optimized for readability)
 │   ├── analyze_stem_kpis.py        # STEM KPI analysis
-│   ├── oulad_correlation_heatmap.png
-│   ├── oulad_detailed_analysis.png
+│   ├── oulad_correlation_heatmap.png 
+│   ├── oulad_detailed_analysis.png  
 │   ├── oulad_eda_basic.png
-│   ├── oulad_eda_cleaned.png
+│   ├── oulad_eda_cleaned.png  
 │   ├── stem_performance_analysis.png
 │   └── nomissing.png
 ├── ml_models/                      # Machine Learning Models
@@ -720,10 +720,47 @@ STEM Courses Available:
 
 **Generated Visualizations:**
 - ![Student Demographics & Academic Patterns](eda/oulad_eda_basic.png) - Overall student population distribution, gender balance, age groups, education levels, and academic behavior patterns
-- ![Post-Cleaning Performance Distribution](eda/oulad_eda_cleaned.png) - Final result distribution, gender demographics, age band analysis, education level breakdown, previous attempts patterns, and credit load distribution
-- ![Feature Relationship Analysis](eda/oulad_correlation_heatmap.png) - Correlation matrix showing relationships between student characteristics, academic factors, and performance indicators
-- ![Performance Factor Deep Dive](eda/oulad_detailed_analysis.png) - Success rates by demographics, age-based performance analysis, regional variations, and socioeconomic impact on academic outcomes
-- ![STEM Course Performance Comparison](eda/stem_performance_analysis.png) - STEM vs Non-STEM success rates, subject-specific performance (Engineering 14.7%, Science 9.3%, Computing 8.3%), and excellence patterns across STEM courses
+- ![Student Demographics & Performance](eda/oulad_eda_cleaned.png) 
+
+**Student Performance Distribution**: This pie chart shows the breakdown of final results across all students. The largest segment represents students who passed their courses, followed by those who failed, achieved distinction, or withdrew. The percentages are clearly labeled for easy interpretation.
+
+**Gender Distribution**: This bar chart displays the number of male and female students in the dataset. The bars are color-coded (pink for female, blue for male) with exact student counts labeled on top of each bar for precise reading.
+
+**Age Distribution**: This visualization shows the distribution of students across different age bands (0-35, 35-55, 55+). The majority of students fall in the 0-35 age group, with decreasing numbers in older age bands. Each bar shows the exact count of students.
+
+**Education Level Distribution**: This chart displays the highest education level of students before enrolling. Categories include HE Qualification, A Level, Lower Than A Level, and Post Graduate. The bars show the number of students in each category with clear labels.
+
+**Previous Course Attempts**: This bar chart shows how many times students have attempted courses before. Most students have 0 previous attempts, with decreasing numbers for higher attempt counts. This helps identify students who may need additional support.
+
+**Credits Distribution**: This histogram shows the distribution of credit loads across students. The red dashed line indicates the mean number of credits, helping identify typical course loads and outliers.
+
+- ![Feature Correlation Matrix](eda/oulad_correlation_heatmap.png) 
+
+**Correlation Analysis**: This heatmap displays the strength and direction of relationships between numerical features in the dataset. Each cell shows the correlation coefficient between two variables, ranging from -1 (perfect negative correlation) to +1 (perfect positive correlation).
+
+**Color Interpretation**: Red colors indicate negative correlations (when one variable increases, the other decreases), while blue colors indicate positive correlations (both variables increase together). The intensity of the color shows the strength of the relationship.
+
+**Key Relationships**: The matrix reveals which student characteristics are most strongly related to academic success, helping identify the most predictive features for the machine learning models.
+
+- ![Performance by Demographics](eda/oulad_detailed_analysis.png) 
+
+**Success Rate by Gender**: This bar chart compares the success rates between male and female students. The percentage labels show the exact success rate for each gender, revealing any gender-based performance differences.
+
+**Success Rate by Age Group**: This visualization shows how success rates vary across different age bands. Younger students (0-35) may show different performance patterns compared to older students, with percentage labels for precise comparison.
+
+**Success Rate by Education Level**: This chart displays success rates based on students' prior education levels. Students with higher education qualifications may show different success patterns, with clear percentage labels for each category.
+
+**Credits vs Success Rate**: This scatter plot shows the relationship between the number of credits a student is taking and their success outcome. Green points represent successful students, while red points represent unsuccessful students, helping identify if credit load affects performance.
+
+- ![STEM Performance Analysis](eda/stem_performance_analysis.png)
+
+**STEM Subject Distribution**: This bar chart shows the number of students enrolled in each STEM subject area (Computing and IT, Science, Engineering and Technology, Mathematics and Statistics). The bars are color-coded and labeled with exact student counts.
+
+**STEM Success Rate by Subject**: This visualization compares success rates across different STEM subjects. Each bar shows the percentage of students who succeeded in each subject area, helping identify which STEM fields have higher or lower success rates.
+
+**STEM Success Rate by Gender**: This chart shows how male and female students perform in STEM courses specifically. The percentage labels reveal any gender-based differences in STEM performance.
+
+**STEM Success Rate by Education Level**: This visualization displays success rates in STEM courses based on students' prior education levels. It helps identify which educational backgrounds are most successful in STEM fields.
 
 ### 3. Machine Learning Model Implementation
 
