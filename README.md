@@ -1,4 +1,4 @@
-# Student STEM Performance Prediction Project
+ # Student STEM Performance Prediction Project
 ## Capstone Project - Big Data Analytics
 
 **Course:** INSY 8413 | Introduction to Big Data Analytics  
@@ -445,88 +445,7 @@ def create_target_variable(self, df):
 **Approach:** Comprehensive statistical analysis of cleaned datasets with detailed insights
 
 **Descriptive Statistics Implementation:**
-```python
-def generate_descriptive_statistics(self, cleaned_datasets):
-    for name, df in cleaned_datasets.items():
-        print(f"{name.upper()} DATASET")
-        print(f"Shape: {df.shape[0]:,} rows x {df.shape[1]} columns")
-        print(f"Memory usage: {df.memory_usage(deep=True).sum() / 1024:.1f} KB")
-        
-        numerical_cols = df.select_dtypes(include=[np.number]).columns
-        if len(numerical_cols) > 0:
-            print("Numerical Columns Statistics:")
-            print(df[numerical_cols].describe())
-```
-
-**Terminal Output Results:**
-```
-DESCRIPTIVE STATISTICS
-============================================================
-STUDENTINFO DATASET
-----------------------------------------
-Shape: 8,149 rows x 14 columns
-Memory usage: 1607.6 KB
-Data Types:
-float64    11
-object      2
-int64       1
-Name: count, dtype: int64
-Numerical Columns Statistics:
-         id_student        gender        region  ...  final_result  success  final_result_encoded
-count  8.149000e+03  8.149000e+03  8.149000e+03  ...  8.149000e+03      0.0              0.0
-mean   7.110044e+05 -5.580407e-17 -4.534081e-17  ... -1.046326e-16      NaN              NaN
-std    5.537432e+05  1.000061e+00  1.000061e+00  ...  1.000061e+00      NaN              NaN
-min    6.516000e+03 -1.086835e+00 -1.570050e+00  ... -2.028959e+00      NaN              NaN
-25%    5.123350e+05 -1.086835e+00 -7.623266e-01  ... -9.726093e-01      NaN              NaN
-50%    5.920930e+05  9.201030e-01  4.539664e-02  ...  8.374058e-02      NaN              NaN
-75%    6.469380e+05  9.201030e-01  8.531199e+00  ...  1.140090e+00      NaN              NaN
-max    2.707979e+06  9.201030e-01  1.660843e+00  ...  1.140090e+00      NaN              NaN
-
-STUDENTASSESSMENT DATASET
-----------------------------------------
-Shape: 43,429 rows x 5 columns
-Memory usage: 1696.6 KB
-Data Types:
-float64    3
-int64      2
-Name: count, dtype: int64
-Numerical Columns Statistics:
-       id_assessment     id_student  date_submitted  is_banked         score
-count   43429.000000   43429.000000    4.342900e+04    43429.0  4.342900e+04
-mean    26570.212738  571077.040779   -2.094211e-17        0.0  2.094211e-16
-std      8775.432897   75091.205980    1.000012e+00        0.0  1.000012e+00
-min      1752.000000  312061.000000   -1.779221e+00        0.0 -2.285101e+00
-25%     15023.000000  548197.000000   -9.088143e-01        0.0 -3.698254e-01
-50%     25359.000000  585093.000000    3.708426e-03        0.0  3.040679e-01
-75%     34883.000000  612545.000000    8.039207e-01        0.0  7.296847e+00
-max     37443.000000  721259.000000    3.373023e+00        0.0  1.297174e+00
-No missing values
-
-MERGED DATASET
-----------------------------------------
-Shape: 51,879 rows x 16 columns
-Memory usage: 11044.7 KB
-Data Types:
-float64    12
-int64       2
-object      2
-Name: count, dtype: int64
-Numerical Columns Statistics:
-       id_assessment     id_student  date_submitted  ...  studied_credits    disability  final_result
-count   51879.000000   51879.000000    5.187900e+04  ...     5.187900e+04  5.187900e+04  5.187900e+04       
-mean    27098.644461  572845.105688   -8.765538e-18  ...    -1.577797e-16 -5.697600e-17 -4.382769e-17       
-std      7730.890368   71824.972722    1.000010e+00  ...     1.000010e+00  1.000010e+00  1.000010e+00       
-min     14984.000000  323146.000000   -1.737944e+00  ...    -1.525260e+00 -3.147774e-01 -1.910684e+00       
-25%     24287.000000  550123.000000   -9.049029e-01  ...    -4.223174e-01 -3.147774e-01 -7.671964e-01       
-50%     25357.000000  585526.000000   -2.441926e-03  ...    -4.223174e-01 -3.147774e-01  3.762914e-01       
-75%     34881.000000  611688.000000    8.028309e-01  ...     6.806252e+01 -3.147774e-01  3.762914e-01       
-max     37443.000000  721259.000000    3.364432e+00  ...     2.335039e+00  3.176849e+00  1.519779e+00       
-No missing values
-```
-Why NaN? These are your target variables that haven't been created yet when the descriptive statistics are generated. The NaN appears because:
-The success column is created later in the process
-The final_result_encoded column is also created during target variable preparation
-At the time of descriptive statistics, these columns exist but are empty
+ 
 
 **Key Statistical Findings:**
 - **StudentInfo Dataset**: 8,149 students with 14 features
@@ -536,8 +455,232 @@ At the time of descriptive statistics, these columns exist but are empty
 - **Data Quality**: No missing values after cleaning process
 - **Standardization**: All numerical features properly scaled with mean≈0 and std≈1
 
+**  DESCRIPTIVE STATISTICS - RAW SAMPLED DATA**
+* raw statistics from the original sampled data before any preprocessing:*
+
+**Terminal Output from Raw Sampled Data:**
+```
+  DESCRIPTIVE STATISTICS - SAMPLED DATA
+============================================================
+
+1. STUDENT INFO DATASET
+----------------------------------------
+Shape: 8,149 rows x 12 columns
+Memory usage: 4177.3 KB
+Data Types:
+object    9
+int64     3
+Name: count, dtype: int64
+Missing values: 0
+
+2. DEMOGRAPHIC BREAKDOWN
+----------------------------------------
+Gender Distribution:
+  Male: 4,413 (54.2%)
+  Female: 3,736 (45.8%)
+
+Age Distribution:
+  0-35: 5,683 (69.7%)
+  35-55: 2,398 (29.4%)
+  55+: 68 (0.8%)
+
+Education Level Distribution:
+  A Level or Equivalent: 3,478 (42.7%)
+  Lower Than A Level: 3,312 (40.6%)
+  HE Qualification: 1,187 (14.6%)
+  No Formal quals: 95 (1.2%)
+  Post Graduate Qualification: 77 (0.9%)
+
+Regional Distribution (Top 5):
+  East Anglian Region: 864 (10.6%)
+  Scotland: 832 (10.2%)
+  London Region: 831 (10.2%)
+  South Region: 774 (9.5%)
+  North Western Region: 713 (8.7%)
+
+3. ACADEMIC CHARACTERISTICS
+----------------------------------------
+Previous Attempts Distribution:
+  0 attempts: 7,138 (87.6%)
+  1 attempts: 803 (9.9%)
+  2 attempts: 155 (1.9%)
+  3 attempts: 35 (0.4%)
+  4 attempts: 14 (0.2%)
+  5 attempts: 2 (0.0%)
+  6 attempts: 2 (0.0%)
+
+Studied Credits Statistics:
+  Mean: 79.9
+  Median: 60.0
+  Std Dev: 41.1
+  Min: 30
+  Max: 630
+
+Disability Status:
+  N: 7,356 (90.3%)
+  Y: 793 (9.7%)
+
+4. COURSE AND MODULE INFORMATION
+----------------------------------------
+Module Distribution:
+  BBB: 1,987 (24.4%)
+  FFF: 1,928 (23.7%)
+  DDD: 1,615 (19.8%)
+  CCC: 1,113 (13.7%)
+  EEE: 712 (8.7%)   
+  GGG: 613 (7.5%)   
+  AAA: 181 (2.2%)
+
+Presentation Distribution:
+  2014J: 2,932 (36.0%)
+  2013J: 2,219 (27.2%)
+  2014B: 1,862 (22.8%)
+  2013B: 1,136 (13.9%)
+
+5. ASSESSMENT DATA
+----------------------------------------
+Assessment Records: 43,429
+Unique Students with Assessments: 5,833
+Average Assessments per Student: 7.4
+
+Assessment Score Statistics:
+  Mean: 75.9
+  Median: 80.0
+  Std Dev: 18.9
+  Min: 0
+  Max: 100
+  Valid Scores: 43,382
+  Missing Scores: 47
+
+6. STEM COURSE ANALYSIS
+----------------------------------------
+STEM Students: 2,722 (33.4%)
+Non-STEM Students: 5,427 (66.6%)
+
+STEM Module Distribution:
+  FFF (Science): 1,928 (70.8%)
+  GGG (Engineering and Technology): 613 (22.5%)
+  AAA (Computing and IT): 181 (6.6%)
+
+7. DATA QUALITY SUMMARY
+----------------------------------------
+ Total Students: 8,149
+ Complete Records: 0 missing values
+ Assessment Coverage: 5,833 students with assessment data
+ STEM Representation: 2,722 students in STEM courses
+ Memory Efficiency: 4177.3 KB
+
+```
+
+**Key Raw Data Insights:**
+- **Total Students**: 8,149 (not 7,196 as initially stated - this includes all sampled records)
+- **Gender Balance**: Slight male majority (54.2% vs 45.8%)
+- **Age Distribution**: Young learners dominate (69.7% aged 0-35)
+- **Education Levels**: Most students have A-Level or lower qualifications (83.3%)
+- **Academic History**: 87.6% are first-time students (0 previous attempts)
+- **Assessment Performance**: Strong average score of 75.9/100 with median of 80.0
+- **STEM Representation**: 33.4% of students in STEM courses (2,722 students)
+- **Data Quality**: Excellent with no missing values in core student information
+
 **Implementation Location in exploratory_analysis.py:**
 - **Lines 267-297:** `generate_descriptive_statistics()` - Comprehensive dataset statistics
+
+**Raw Data Statistics Script (get_correct_stats.py):**
+```python
+#!/usr/bin/env python3
+"""
+Generate Correct Descriptive Statistics for Sampled Data
+Shows raw statistics before any preprocessing or standardization
+"""
+
+import pandas as pd
+import numpy as np
+
+def main():
+    print("CORRECT DESCRIPTIVE STATISTICS - SAMPLED DATA")
+    print("=" * 60)
+    
+    # Load raw sampled data
+    print("Loading sampled datasets...")
+    student_info = pd.read_csv('oulad_sampled/studentInfo.csv')
+    student_assessment = pd.read_csv('oulad_sampled/studentAssessment.csv')
+    assessments = pd.read_csv('oulad_sampled/assessments.csv')
+    courses = pd.read_csv('oulad_sampled/courses.csv')
+    student_registration = pd.read_csv('oulad_sampled/studentRegistration.csv')
+    
+    print("\n1. STUDENT INFO DATASET")
+    print("-" * 40)
+    print(f"Shape: {student_info.shape[0]:,} rows x {student_info.shape[1]} columns")
+    print(f"Memory usage: {student_info.memory_usage(deep=True).sum() / 1024:.1f} KB")
+    print(f"Data Types:")
+    print(student_info.dtypes.value_counts())
+    print(f"Missing values: {student_info.isnull().sum().sum()}")
+    
+    # Gender distribution
+    gender_counts = student_info['gender'].value_counts()
+    print(f"Gender Distribution:")
+    print(f"  Male: {gender_counts['M']:,} ({gender_counts['M']/len(student_info)*100:.1f}%)")
+    print(f"  Female: {gender_counts['F']:,} ({gender_counts['F']/len(student_info)*100:.1f}%)")
+    
+    # Age distribution
+    age_counts = student_info['age_band'].value_counts()
+    print(f"\nAge Distribution:")
+    print(f"  0-35: {age_counts['0-35']:,} ({age_counts['0-35']/len(student_info)*100:.1f}%)")
+    print(f"  35-55: {age_counts['35-55']:,} ({age_counts['35-55']/len(student_info)*100:.1f}%)")
+    print(f"  55+: {age_counts['55<=']:,} ({age_counts['55<=']/len(student_info)*100:.1f}%)")
+    
+    # Education level
+    edu_counts = student_info['highest_education'].value_counts()
+    print(f"\nEducation Level Distribution:")
+    for level, count in edu_counts.items():
+        print(f"  {level}: {count:,} ({count/len(student_info)*100:.1f}%)")
+    
+    # Previous attempts
+    attempt_counts = student_info['num_of_prev_attempts'].value_counts().sort_index()
+    print(f"Previous Attempts Distribution:")
+    for attempts, count in attempt_counts.items():
+        print(f"  {attempts} attempts: {count:,} ({count/len(student_info)*100:.1f}%)")
+    
+    # Studied credits
+    credits_stats = student_info['studied_credits'].describe()
+    print(f"\nStudied Credits Statistics:")
+    print(f"  Mean: {credits_stats['mean']:.1f}")
+    print(f"  Median: {credits_stats['50%']:.1f}")
+    print(f"  Std Dev: {credits_stats['std']:.1f}")
+    print(f"  Min: {credits_stats['min']:.0f}")
+    print(f"  Max: {credits_stats['max']:.0f}")
+    
+    # Assessment scores
+    try:
+        scores_numeric = pd.to_numeric(student_assessment['score'], errors='coerce')
+        score_stats = scores_numeric.describe()
+        print(f"\nAssessment Score Statistics:")
+        print(f"  Mean: {score_stats['mean']:.1f}")
+        print(f"  Median: {score_stats['50%']:.1f}")
+        print(f"  Std Dev: {score_stats['std']:.1f}")
+        print(f"  Min: {score_stats['min']:.0f}")
+        print(f"  Max: {score_stats['max']:.0f}")
+        print(f"  Valid Scores: {scores_numeric.count():,}")
+        print(f"  Missing Scores: {scores_numeric.isnull().sum():,}")
+    except Exception as e:
+        print(f"\nAssessment Score Statistics: Error processing scores - {e}")
+    
+    # STEM analysis
+    stem_modules = ['AAA', 'FFF', 'GGG', 'HHH']
+    stem_students = student_info[student_info['code_module'].isin(stem_modules)]
+    
+    print(f"STEM Students: {len(stem_students):,} ({len(stem_students)/len(student_info)*100:.1f}%)")
+    print(f"Non-STEM Students: {len(student_info) - len(stem_students):,} ({(len(student_info) - len(stem_students))/len(student_info)*100:.1f}%)")
+    
+    print(f"\nSTEM Module Distribution:")
+    stem_module_counts = stem_students['code_module'].value_counts()
+    for module, count in stem_module_counts.items():
+        module_names = {'AAA': 'Computing and IT', 'FFF': 'Science', 'GGG': 'Engineering and Technology', 'HHH': 'Mathematics and Statistics'}
+        print(f"  {module} ({module_names.get(module, module)}): {count:,} ({count/len(stem_students)*100:.1f}%)")
+
+if __name__ == "__main__":
+    main()
+```
 
 #### 2.2 Target Variable Analysis
 **Approach:** Detailed analysis of success and excellence prediction targets
