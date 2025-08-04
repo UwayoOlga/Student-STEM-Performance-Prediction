@@ -523,6 +523,10 @@ min     14984.000000  323146.000000   -1.737944e+00  ...    -1.525260e+00 -3.147
 max     37443.000000  721259.000000    3.364432e+00  ...     2.335039e+00  3.176849e+00  1.519779e+00       
 No missing values
 ```
+Why NaN? These are your target variables that haven't been created yet when the descriptive statistics are generated. The NaN appears because:
+The success column is created later in the process
+The final_result_encoded column is also created during target variable preparation
+At the time of descriptive statistics, these columns exist but are empty
 
 **Key Statistical Findings:**
 - **StudentInfo Dataset**: 8,149 students with 14 features
