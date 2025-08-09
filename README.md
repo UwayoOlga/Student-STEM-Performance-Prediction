@@ -1259,10 +1259,6 @@ Student-STEM-Performance-Prediction/
 └── main.py                     # Main execution script
 ```
 
-**Screenshots:**
-- [Screenshot: Project File Structure]
-- [Screenshot: Code Modularity Examples]
-
 ### 6. Innovation Implementation
 
 #### 6.1 Custom Feature Engineering Functions
